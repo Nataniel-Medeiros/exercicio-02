@@ -1,0 +1,66 @@
+# TCLab Analytics Pro - Configurações
+
+[project]
+name = "tclab-analytics-pro"
+version = "1.0.0"
+description = "Solução profissional para análise de dados de controle de temperatura do TCLab"
+authors = ["Natan <natan@example.com>"]
+license = "MIT"
+readme = "README.md"
+python = "^3.12"
+
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project.dependencies]
+tclab = ">=1.0.0"
+pandas = ">=2.0.0"
+numpy = ">=1.24.0"
+matplotlib = ">=3.7.0"
+plotly = ">=5.0.0"
+dash = ">=2.0.0"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "black>=23.0.0",
+    "flake8>=6.0.0",
+    "mypy>=1.0.0"
+]
+
+[project.urls]
+Homepage = "https://github.com/natan/tclab-analytics-pro"
+Documentation = "https://github.com/natan/tclab-analytics-pro/blob/main/README.md"
+Repository = "https://github.com/natan/tclab-analytics-pro.git"
+Issues = "https://github.com/natan/tclab-analytics-pro/issues"
+
+[project.scripts]
+tclab-analytics = "src.analise_web:main"
+
+[tool.black]
+line-length = 88
+target-version = ['py312']
+include = '\.pyi?$'
+extend-exclude = '''
+/(
+  # directories
+  \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | build
+  | dist
+)/
+'''
+
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
