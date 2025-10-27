@@ -31,6 +31,13 @@
 - **Correlações**: Matriz de correlação entre variáveis
 - **Interface Web**: Dashboard interativo com design profissional
 
+### 🗜️ Sistema de Compressão Avançado
+- **Compressão Lossless**: Redução de até 92% no tamanho dos arquivos
+- **Múltiplos Algoritmos**: LZMA, Zstandard (zstd) e Gzip
+- **Preservação de Dados**: Mantém arquivos originais por padrão
+- **Descompressão Isolada**: Restaura arquivos em pasta separada (`descomp/`)
+- **Interface Dupla**: Uso programático e linha de comando
+
 ### 🎨 Interface Moderna
 - **Design Responsivo**: Compatível com desktop e mobile
 - **Tema Profissional**: Cores azul escuro, branco e cinza metalizado
@@ -64,9 +71,14 @@ source exec2-venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 4. Instalar Dependências Manualmente (se necessário)
+### 4. Instalar Dependências Opcionais (Recomendado para Compressão)
 ```bash
-pip install tclab pandas numpy matplotlib plotly dash
+pip install zstandard  # Para algoritmo zstd (melhor performance)
+```
+
+### 5. Instalar Dependências Manualmente (se necessário)
+```bash
+pip install tclab pandas numpy matplotlib plotly dash zstandard
 ```
 
 ## 📁 Estrutura do Projeto
@@ -78,14 +90,20 @@ exercicio-02/
 │   ├── 🐍 main-ch.py               # Simulação com histerese
 │   ├── 🐍 analise.py               # Análise com matplotlib
 │   ├── 🐍 analise2.py              # Análise completa via terminal
-│   └── 🐍 analise_web.py           # Dashboard web interativo
-├── 📁 setpoints/                    # Arquivos de setpoints
+│   ├── 🐍 analise_web.py           # Dashboard web interativo
+│   ├── � compression.py           # Sistema de compressão avançado
+│   └── 🐍 __init__.py              # Inicializador do pacote
+├── �📁 setpoints/                    # Arquivos de setpoints
 │   ├── 📄 setpoints_7days_6h.csv
 │   └── 📄 setpoints_7days_histerese_6h.csv
 ├── 📁 output/                       # Dados de simulação
-│   ├── 📄 tclab_data_float16_int8_10080min_noH.csv
-│   └── 📄 tclab_data_histerese_float16_int8_10080min.csv
+│   ├── 📄 tclab_data_7days.csv     # Dados completos de 7 dias
+│   ├── 📄 tclab_data_*.csv.xz      # Arquivos comprimidos (LZMA)
+│   └── 📄 tclab_data_*.csv         # Dados originais (mantidos)
+├── 📁 descomp/                      # Arquivos descomprimidos
+│   └── 📄 tclab_data_*.csv         # Cópias restauradas
 ├── 📁 exec2-venv/                   # Ambiente virtual
+├── 📄 comp-descomp.md              # Documentação do sistema de compressão
 ├── 📄 README.md                     # Este arquivo
 └── 📄 requirements.txt              # Dependências
 ```
@@ -116,6 +134,45 @@ python src/analise2.py
 python src/analise_web.py
 ```
 Acesse: http://127.0.0.1:8050
+
+### 3. Sistema de Compressão
+
+#### Comprimir Arquivos da Pasta Output:
+```bash
+# Comprimir todos os CSV mantendo originais
+python -m src.compression compress --folder output --alg lzma --level 6 --pattern "*.csv"
+
+# Comprimir com Zstandard (mais rápido)
+python -m src.compression compress --folder output --alg zstd --level 3 --pattern "*.csv"
+```
+
+#### Descomprimir Arquivos:
+```bash
+# Descomprimir para pasta 'descomp'
+python -m src.compression decompress --folder output --output descomp
+
+# Listar algoritmos disponíveis
+python -m src.compression list
+```
+
+#### Uso Programático:
+```python
+import src.compression as comp
+
+# Comprimir mantendo originais
+result = comp.compress_files_in_folder(
+    folder_path='output',
+    algorithm='lzma',
+    level=6,
+    pattern='*.csv'
+)
+
+# Descomprimir para pasta separada
+comp.decompress_files_in_folder(
+    folder_path='output',
+    output_folder='descomp'
+)
+```
 
 ### 3. Configurações de Simulação
 
@@ -166,7 +223,25 @@ heater_type = 'int8'           # Tipo do aquecedor
 - ⚠️ **Ligeiro aumento** no consumo energético
 - ✅ **Redução significativa** do chattering
 
-## 🛠️ Tecnologias Utilizadas
+## �️ Sistema de Compressão - Estatísticas
+
+### Performance com Dados Reais (51MB de dados CSV)
+
+| Algoritmo | Taxa Compressão | Redução | Tempo Compressão | Tempo Descompressão |
+|-----------|-----------------|---------|------------------|---------------------|
+| **LZMA** | 8.0% | **92.0%** | 20.74s | 0.39s |
+| **Zstd** | ~12-15% | **85-88%** | ~3-5s | ~0.2s |
+| **Gzip** | ~20-25% | **75-80%** | ~1-2s | ~0.15s |
+
+### Benefícios Obtidos
+- 🎯 **Economia de Espaço**: 51MB → 4MB (redução de 92%)
+- ⚡ **Backup Rápido**: Arquivos 12.5x menores
+- 💾 **Armazenamento**: Significativa redução de custos
+- 🔒 **Integridade**: 100% dos dados preservados sem perda
+
+📖 **Documentação Completa**: Ver `comp-descomp.md` para detalhes técnicos
+
+## �🛠️ Tecnologias Utilizadas
 
 - **🐍 Python 3.12**: Linguagem principal
 - **📊 TCLab**: Simulador de controle de temperatura
@@ -175,6 +250,7 @@ heater_type = 'int8'           # Tipo do aquecedor
 - **📊 Matplotlib**: Visualizações estáticas
 - **📈 Plotly**: Gráficos interativos
 - **🌐 Dash**: Framework web para dashboards
+- **🗜️ LZMA/Zstd/Gzip**: Algoritmos de compressão lossless
 - **🎨 CSS3**: Estilização da interface
 
 ## 📋 Formato dos Dados

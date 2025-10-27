@@ -16,3 +16,6 @@ dash>=2.0.0
 
 # Utilitários
 pathlib2>=2.3.0  # Para compatibilidade com Path
+
+# Opcional: melhor compressão e velocidade (zstd). Instale se quiser usar o algoritmo zstandard.
+zstandard
