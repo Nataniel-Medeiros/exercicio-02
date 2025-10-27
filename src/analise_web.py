@@ -17,7 +17,7 @@ COLORS = {
     'secondary': '#64748b',      # Cinza azulado
     'accent': '#06b6d4',         # Cyan
     'text_primary': '#f8fafc',   # Branco
-    'text_secondary': '#cbd5e1', # Cinza claro
+    'text_secondary': '#cbd5e1', # Cinza claro 
     'success': '#10b981',        # Verde
     'warning': '#f59e0b',        # Amarelo
     'error': '#ef4444',          # Vermelho
@@ -351,7 +351,7 @@ files_data = load_csv_files()
 
 # Inicializar app Dash
 app = dash.Dash(__name__)
-app.title = "TCLab Analytics Pro"
+app.title = "TCLab Analytics"
 
 # Layout da aplicação
 app.layout = html.Div([
@@ -359,7 +359,7 @@ app.layout = html.Div([
     html.Div([
         html.H1([
             html.I(className="fas fa-chart-line", style={'margin-right': '15px'}),
-            "TCLab Analytics Pro"
+            "TCLab Analytics"
         ], style={
             'text-align': 'center',
             'color': COLORS['text_primary'],
@@ -367,7 +367,7 @@ app.layout = html.Div([
             'font-weight': '300',
             'font-size': '2.5rem'
         }),
-        html.P("Análise Profissional de Dados de Controle de Temperatura", style={
+        html.P("Análise de Dados de Controle de Temperatura", style={
             'text-align': 'center',
             'color': COLORS['text_secondary'],
             'margin': '10px 0 0 0',
@@ -422,7 +422,7 @@ app.layout = html.Div([
     # Footer
     html.Div([
         html.P([
-            "🔬 TCLab Analytics Pro | ",
+            "🔬 TCLab Analytics | ",
             html.A("Desenvolvido com Dash & Plotly", 
                   href="https://plotly.com/dash/", 
                   style={'color': COLORS['accent'], 'text-decoration': 'none'})
